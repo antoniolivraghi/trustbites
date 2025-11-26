@@ -448,6 +448,18 @@ def page_profile():
     bio_default = st.session_state["profile"].get("bio", user_record.get("bio", ""))
 
     st.markdown('<div class="tb-card">', unsafe_allow_html=True)
+    
+    up = st.file_uploader("Avatar photo (optional)", type=["png", "jpg", "jpeg"], key="profile_photo_uploader")
+    if up is not None:
+        new_photo_b64 = image_file_to_b64(up)
+        if new_photo_b64:
+            st.session_state["profile"]["photo_b64"] = new_photo_b64
+            st.success("Photo uploaded! Click 'Save profile' to save all changes.")
+    
+    current_photo = st.session_state["profile"].get("photo_b64")
+    if current_photo:
+        st.image(f"data:image/jpeg;base64,{current_photo}", width=100, caption="Current avatar")
+    
     with st.form("profile_form"):
         c1, c2 = st.columns(2)
         with c1:
@@ -457,11 +469,6 @@ def page_profile():
 
         email_new = st.text_input("Email", value=email)
         bio = st.text_area("Bio", value=bio_default, height=120)
-
-        up = st.file_uploader("Avatar photo (optional)", type=["png", "jpg", "jpeg"])
-        photo_b64 = st.session_state["profile"].get("photo_b64")
-        if up is not None:
-            photo_b64 = image_file_to_b64(up)
 
         save = st.form_submit_button("Save profile")
 
@@ -484,7 +491,7 @@ def page_profile():
                     {"email": email_new, "first_name": first, "last_name": last}
                 )
                 st.session_state["profile"].update(
-                    {"name": f"{first} {last}".strip(), "bio": bio, "photo_b64": photo_b64}
+                    {"name": f"{first} {last}".strip(), "bio": bio}
                 )
                 st.success("Profile updated.")
                 st.rerun()
