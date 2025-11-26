@@ -1,17 +1,10 @@
 [theme]
 base = "light"
-primaryColor = "#16A085"           # buttons / sliders
-backgroundColor = "#FAFAFF"        # page
-secondaryBackgroundColor = "#FFFFFF"  # panels / sidebar
-textColor = "#1A2233"              # text
+primaryColor = "#16A085"
+backgroundColor = "#FAFAFF"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1A2233"
 font = "sans serif"
-
-[server]
-port = 5000
-address = "0.0.0.0"
-headless = true
-enableCORS = false
-enableXsrfProtection = false
 
 [browser]
 gatherUsageStats = false
