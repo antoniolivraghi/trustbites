@@ -1,0 +1,7 @@
+[theme]
+base = "light"
+primaryColor = "#16A085"           # buttons / sliders
+backgroundColor = "#FAFAFF"        # page
+secondaryBackgroundColor = "#FFFFFF"  # panels / sidebar
+textColor = "#1A2233"              # text
+font = "sans serif"

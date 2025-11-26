@@ -31,8 +31,8 @@ def inject_styles():
         """
     <style>
       :root{
-        --brand: #2563EB;          /* blue */
-        --brand-strong: #F97316;   /* orange */
+        --brand: #2563EB;
+        --brand-strong: #F97316;
         --text: #0F172A;
         --muted: #64748B;
         --panel: #FFFFFF;
@@ -136,11 +136,19 @@ def inject_styles():
         display:flex; align-items:center; justify-content:center;
         font-size:20px;
       }
+
+      /* Hide stray empty text input bars */
+      div[data-testid="stTextInput"] > label:empty + div input {
+        display: none !important;
+      }
+      div[data-testid="stTextInput"] > label:empty {
+        display: none !important;
+      }
+
     </style>
     """,
         unsafe_allow_html=True,
     )
-
 
 inject_styles()
 
