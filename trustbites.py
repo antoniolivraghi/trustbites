@@ -97,6 +97,43 @@ def inject_styles():
         border: 2px solid #E2E8F0;
       }
 
+      .tb-header-center {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .tb-header-nav {
+        display: inline-flex;
+        gap: 0.25rem;
+        align-items: center;
+      }
+
+      .tb-header-btn {
+        padding: 0.4rem 0.85rem;
+        border-radius: 8px;
+        border: 1px solid #E2E8F0;
+        background: white;
+        color: var(--text-light);
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+      }
+
+      .tb-header-btn:hover {
+        background: #F8FAFC;
+        border-color: var(--brand);
+        color: var(--brand);
+      }
+
+      .tb-header-btn.active {
+        background: var(--brand);
+        color: white;
+        border-color: var(--brand);
+      }
+
       .tb-user-menu {
         display: flex;
         align-items: center;
@@ -460,15 +497,15 @@ CITY_CENTERS = {
 
 # ---------- NAV + TOP BAR ----------
 def _render_header():
-    """Render the logo and user info header."""
+    """Render the logo, nav links and user info in header."""
     auth = st.session_state["auth"]
-    avatar_url = _avatar()
     
     logo_html = ""
     if LOGO_B64:
         logo_html = f'<img src="data:image/png;base64,{LOGO_B64}" alt="TrustBites" />'
     
     if auth["signed_in"]:
+        avatar_url = _avatar()
         user_name = f"{auth.get('first_name', '')} {auth.get('last_name', '')}".strip() or auth['email'].split('@')[0]
         
         st.markdown(
@@ -478,6 +515,7 @@ def _render_header():
                     {logo_html}
                     <span>TrustBites</span>
                 </div>
+                <div id="nav-placeholder"></div>
                 <div class="tb-user-menu">
                     <span class="tb-user-name">{user_name}</span>
                     <img src="{avatar_url}" class="tb-avatar-small" alt="Profile" />
@@ -502,7 +540,7 @@ def _render_header():
 
 
 def _navbar():
-    """Handle navigation state and render interactive navigation."""
+    """Handle navigation state and render interactive navigation in header."""
     auth = st.session_state["auth"]
     
     _render_header()
@@ -510,39 +548,24 @@ def _navbar():
     if auth["signed_in"]:
         current_page = st.session_state.get("page", "Home")
         
-        col1, col2, col3, col4, col5, col6, col_spacer, col_signout = st.columns([1.2, 1.4, 1, 0.8, 0.8, 1.2, 2, 1])
+        cols = st.columns([0.8, 1, 0.7, 0.6, 0.6, 0.8, 3, 0.7])
         
-        with col1:
-            if st.button("🏠 Home", key="nav_Home", type="primary" if current_page == "Home" else "secondary", use_container_width=True):
-                st.session_state["page"] = "Home"
-                st.rerun()
+        nav_items = [
+            ("🏠 Home", "nav_Home", "Home"),
+            ("➕ Add place", "nav_Add", "Add a place"),
+            ("📋 My list", "nav_List", "My list"),
+            ("🗺️ Map", "nav_Map", "Map"),
+            ("📰 Feed", "nav_Feed", "Feed"),
+            ("👤 Profile", "nav_Profile", "Profile"),
+        ]
         
-        with col2:
-            if st.button("➕ Add place", key="nav_Add", type="primary" if current_page == "Add a place" else "secondary", use_container_width=True):
-                st.session_state["page"] = "Add a place"
-                st.rerun()
+        for i, (label, key, page) in enumerate(nav_items):
+            with cols[i]:
+                if st.button(label, key=key, type="primary" if current_page == page else "secondary", use_container_width=True):
+                    st.session_state["page"] = page
+                    st.rerun()
         
-        with col3:
-            if st.button("📋 My list", key="nav_List", type="primary" if current_page == "My list" else "secondary", use_container_width=True):
-                st.session_state["page"] = "My list"
-                st.rerun()
-        
-        with col4:
-            if st.button("🗺️ Map", key="nav_Map", type="primary" if current_page == "Map" else "secondary", use_container_width=True):
-                st.session_state["page"] = "Map"
-                st.rerun()
-        
-        with col5:
-            if st.button("📰 Feed", key="nav_Feed", type="primary" if current_page == "Feed" else "secondary", use_container_width=True):
-                st.session_state["page"] = "Feed"
-                st.rerun()
-        
-        with col6:
-            if st.button("👤 Profile", key="nav_Profile", type="primary" if current_page == "Profile" else "secondary", use_container_width=True):
-                st.session_state["page"] = "Profile"
-                st.rerun()
-        
-        with col_signout:
+        with cols[7]:
             if st.button("Sign out", key="signout_nav", type="secondary", use_container_width=True):
                 st.session_state["auth"] = {
                     "signed_in": False,
@@ -552,8 +575,6 @@ def _navbar():
                 }
                 st.session_state["profile"] = {"name": "", "bio": "", "photo_b64": None}
                 st.rerun()
-        
-        st.markdown("<div style='margin-bottom:1rem'></div>", unsafe_allow_html=True)
         
         return st.session_state["page"]
     else:
