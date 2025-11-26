@@ -299,12 +299,18 @@ CITY_CENTERS = {
 def _navbar():
     auth = st.session_state["auth"]
     with st.sidebar:
-        # avatar + email
-        st.markdown('<div class="tb-card" style="padding:.9rem">', unsafe_allow_html=True)
-        st.image(_avatar(), width=56)
-        if auth["signed_in"]:
-            st.caption(auth["email"])
-        st.markdown('</div>', unsafe_allow_html=True)
+        avatar_url = _avatar()
+        email_text = auth["email"] if auth["signed_in"] else ""
+        st.markdown(
+            f'''
+            <div style="display:flex;align-items:center;gap:12px;padding:0.5rem 0 1rem 0;">
+                <img src="{avatar_url}" 
+                     style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #E5E7EB;" />
+                <div style="font-size:13px;color:#64748B;overflow:hidden;text-overflow:ellipsis;">{email_text}</div>
+            </div>
+            ''',
+            unsafe_allow_html=True,
+        )
 
         profile_clicked = False
 
