@@ -197,7 +197,7 @@ def hero(title: str, subtitle: str):
 def _avatar():
     p = st.session_state["profile"]
     if p.get("photo_b64"):
-        return f"data:image/png;base64,{p['photo_b64']}"
+        return f"data:image/jpeg;base64,{p['photo_b64']}"
     a = st.session_state["auth"]
     initials = "".join(
         [x[:1] for x in [a.get("first_name", ""), a.get("last_name", "")] if x]
