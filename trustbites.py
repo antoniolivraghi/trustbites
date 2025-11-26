@@ -32,112 +32,261 @@ def inject_styles():
     <style>
       :root{
         --brand: #2563EB;
+        --brand-light: #3B82F6;
         --brand-strong: #F97316;
-        --text: #0F172A;
+        --accent: #10B981;
+        --text: #1E293B;
+        --text-light: #475569;
         --muted: #64748B;
         --panel: #FFFFFF;
-        --bg: #F9FAFF;
-        --ring: rgba(37,99,235,.18);
+        --bg: #F8FAFC;
+        --border: rgba(15,23,42,.08);
+        --ring: rgba(37,99,235,.15);
+        --shadow: 0 4px 20px rgba(15,23,42,.08);
       }
 
-      .stApp{
-        background:
-          radial-gradient(900px 400px at 85% -20%, rgba(37,99,235,.1), transparent),
-          radial-gradient(800px 300px at -10% 10%, rgba(249,115,22,.08), transparent),
-          var(--bg);
+      /* Hide default Streamlit sidebar */
+      section[data-testid="stSidebar"] {
+        display: none !important;
+      }
+      
+      .stApp {
+        background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
         color: var(--text);
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
       }
 
-      .main .block-container { max-width: 1120px; padding-top: 1.2rem; }
-
-      .tb-hero{
-        background: linear-gradient(90deg, #FFEDD5, #DBEAFE);
-        border-radius: 18px;
-        padding: 18px 22px;
-        border: 1px solid rgba(15,23,42,.06);
-        box-shadow: 0 10px 30px rgba(15,23,42,.05);
+      .main .block-container { 
+        max-width: 1200px; 
+        padding-top: 0.5rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
       }
 
-      .tb-card{
-        background: var(--panel);
-        border-radius: 14px;
-        padding: 16px 18px;
-        border: 1px solid rgba(15,23,42,.06);
-        box-shadow: 0 8px 24px rgba(15,23,42,.05);
-      }
-
-      .tb-card-quick{
-        background: #EEF2FF;
-        border-radius: 18px;
-        padding: 18px 20px;
-        border: 1px solid rgba(15,23,42,.06);
+      /* Header Bar */
+      .tb-header {
+        background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+        border-bottom: 1px solid var(--border);
+        padding: 0.75rem 1.5rem;
+        margin: -1rem -2rem 1rem -2rem;
         display: flex;
-        gap: 16px;
         align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 12px rgba(15,23,42,.04);
       }
 
-      .tb-icon-pill{
-        width: 56px;
-        height: 56px;
+      .tb-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-weight: 700;
+        font-size: 1.35rem;
+        color: var(--text);
+      }
+
+      .tb-logo img {
+        height: 36px;
+        border-radius: 8px;
+      }
+
+      .tb-avatar-small {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #E2E8F0;
+      }
+
+      .tb-user-menu {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .tb-user-name {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      /* Navigation buttons row styling */
+      div[data-testid="stHorizontalBlock"] {
+        gap: 0.5rem !important;
+      }
+
+      div.stButton > button[kind="secondary"] {
+        background: white !important;
+        color: var(--text-light) !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: none !important;
+      }
+
+      div.stButton > button[kind="secondary"]:hover {
+        background: #F8FAFC !important;
+        border-color: var(--brand) !important;
+        color: var(--brand) !important;
+      }
+
+      /* Hero Section */
+      .tb-hero {
+        background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 50%, #FEF3C7 100%);
         border-radius: 20px;
-        background: linear-gradient(135deg,#2563EB,#F97316);
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        color:#FFF;
-        font-size:26px;
+        padding: 2rem 2.5rem;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        margin-bottom: 1.5rem;
       }
 
-      div.stButton > button{
-        background: var(--brand) !important;
+      .tb-hero h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0 0 0.5rem 0;
+      }
+
+      .tb-hero p {
+        color: var(--text-light);
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      /* Cards */
+      .tb-card {
+        background: var(--panel);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        margin-bottom: 1rem;
+      }
+
+      .tb-card-quick {
+        background: linear-gradient(135deg, #EEF2FF 0%, #F0F9FF 100%);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        border: 1px solid var(--border);
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .tb-icon-pill {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--brand) 0%, var(--brand-strong) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFF;
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+
+      /* Buttons */
+      div.stButton > button {
+        background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%) !important;
         color: #fff !important;
         border: none !important;
-        border-radius: 999px !important;
-        padding: .55rem 1.1rem !important;
-        font-weight: 700 !important;
-        box-shadow: 0 6px 18px var(--ring);
-      }
-      div.stButton > button:hover{
-        filter: brightness(1.04);
-      }
-
-      section[data-testid="stSidebar"]{
-        background: #FFFFFF;
-        border-right: 1px solid rgba(15,23,42,.06);
-      }
-
-      .stTextInput>div>div>input,
-      .stSelectbox>div>div,
-      .stTextArea textarea{
         border-radius: 10px !important;
+        padding: 0.6rem 1.25rem !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        box-shadow: 0 4px 14px var(--ring) !important;
+        transition: all 0.2s ease !important;
       }
 
-      .tb-chip{
-        display:inline-block;
-        padding:.25rem .6rem;
-        border-radius:999px;
-        font-size:.78rem;
-        color:#1F2937;
-        background:#E0F2FE;
-        margin:0 .35rem .35rem 0;
+      div.stButton > button:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 20px var(--ring) !important;
       }
 
-      .tb-img-ph{
-        width:220px; height:150px; border-radius:12px;
-        background: linear-gradient(135deg, #EAF7FF, #FFF7ED);
-        display:flex; align-items:center; justify-content:center;
-        color:#9CA3AF; font-weight:700; border:1px dashed #C7D2FE;
+      /* Form inputs */
+      .stTextInput > div > div > input,
+      .stSelectbox > div > div,
+      .stTextArea textarea {
+        border-radius: 10px !important;
+        border: 1.5px solid #E2E8F0 !important;
+        transition: border-color 0.2s, box-shadow 0.2s !important;
       }
 
-      .tb-feed-icon{
-        width:36px; height:36px; border-radius:999px;
-        background:#E0F2FE;
-        display:flex; align-items:center; justify-content:center;
-        font-size:20px;
+      .stTextInput > div > div > input:focus,
+      .stTextArea textarea:focus {
+        border-color: var(--brand) !important;
+        box-shadow: 0 0 0 3px var(--ring) !important;
       }
 
-      /* Hide stray empty text input bars */
+      /* Tags/Chips */
+      .tb-chip {
+        display: inline-block;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--brand);
+        background: #EFF6FF;
+        margin: 0 0.35rem 0.35rem 0;
+        border: 1px solid #BFDBFE;
+      }
+
+      /* Image placeholder */
+      .tb-img-ph {
+        width: 220px;
+        height: 150px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #F0F9FF 0%, #FEF3C7 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94A3B8;
+        font-weight: 600;
+        border: 2px dashed #CBD5E1;
+      }
+
+      /* Feed icons */
+      .tb-feed-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #EFF6FF 0%, #E0F2FE 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      /* Sign out button styling */
+      .tb-signout-btn {
+        background: transparent !important;
+        color: var(--text-light) !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 8px !important;
+        padding: 0.4rem 0.9rem !important;
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+        box-shadow: none !important;
+      }
+
+      .tb-signout-btn:hover {
+        background: #FEF2F2 !important;
+        border-color: #FECACA !important;
+        color: #DC2626 !important;
+      }
+
+      /* Tabs styling */
+      .stTabs [data-baseweb="tab-list"] {
+        gap: 0.5rem;
+        background: transparent;
+      }
+
+      .stTabs [data-baseweb="tab"] {
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+      }
+
+      /* Hide stray empty elements */
       div[data-testid="stTextInput"] > label:empty + div input {
         display: none !important;
       }
@@ -145,7 +294,21 @@ def inject_styles():
         display: none !important;
       }
 
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .tb-topnav {
+          flex-direction: column;
+          gap: 1rem;
+          padding: 1rem;
+        }
+        .tb-nav-links {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+      }
+
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     """,
         unsafe_allow_html=True,
     )
@@ -295,62 +458,106 @@ CITY_CENTERS = {
 }
 
 
-# ---------- NAV + SIDEBAR ----------
-def _navbar():
+# ---------- NAV + TOP BAR ----------
+def _render_header():
+    """Render the logo and user info header."""
     auth = st.session_state["auth"]
-    with st.sidebar:
-        avatar_url = _avatar()
-        email_text = auth["email"] if auth["signed_in"] else ""
+    avatar_url = _avatar()
+    
+    logo_html = ""
+    if LOGO_B64:
+        logo_html = f'<img src="data:image/png;base64,{LOGO_B64}" alt="TrustBites" />'
+    
+    if auth["signed_in"]:
+        user_name = f"{auth.get('first_name', '')} {auth.get('last_name', '')}".strip() or auth['email'].split('@')[0]
+        
         st.markdown(
             f'''
-            <div style="display:flex;align-items:center;gap:12px;padding:0.5rem 0 1rem 0;">
-                <img src="{avatar_url}" 
-                     style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #E5E7EB;" />
-                <div style="font-size:13px;color:#64748B;overflow:hidden;text-overflow:ellipsis;">{email_text}</div>
+            <div class="tb-header">
+                <div class="tb-logo">
+                    {logo_html}
+                    <span>TrustBites</span>
+                </div>
+                <div class="tb-user-menu">
+                    <span class="tb-user-name">{user_name}</span>
+                    <img src="{avatar_url}" class="tb-avatar-small" alt="Profile" />
+                </div>
+            </div>
+            ''',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            f'''
+            <div class="tb-header">
+                <div class="tb-logo">
+                    {logo_html}
+                    <span>TrustBites</span>
+                </div>
+                <div style="color:#64748B;font-size:0.9rem;">Welcome to TrustBites</div>
             </div>
             ''',
             unsafe_allow_html=True,
         )
 
-        profile_clicked = False
 
-        # Blue Profile button
-        if auth["signed_in"]:
-            if st.button("Profile", key="profile_btn", use_container_width=True):
-                # go to profile page; remember that this click happened
+def _navbar():
+    """Handle navigation state and render interactive navigation."""
+    auth = st.session_state["auth"]
+    
+    _render_header()
+    
+    if auth["signed_in"]:
+        current_page = st.session_state.get("page", "Home")
+        
+        col1, col2, col3, col4, col5, col6, col_spacer, col_signout = st.columns([1.2, 1.4, 1, 0.8, 0.8, 1.2, 2, 1])
+        
+        with col1:
+            if st.button("🏠 Home", key="nav_Home", type="primary" if current_page == "Home" else "secondary", use_container_width=True):
+                st.session_state["page"] = "Home"
+                st.rerun()
+        
+        with col2:
+            if st.button("➕ Add place", key="nav_Add", type="primary" if current_page == "Add a place" else "secondary", use_container_width=True):
+                st.session_state["page"] = "Add a place"
+                st.rerun()
+        
+        with col3:
+            if st.button("📋 My list", key="nav_List", type="primary" if current_page == "My list" else "secondary", use_container_width=True):
+                st.session_state["page"] = "My list"
+                st.rerun()
+        
+        with col4:
+            if st.button("🗺️ Map", key="nav_Map", type="primary" if current_page == "Map" else "secondary", use_container_width=True):
+                st.session_state["page"] = "Map"
+                st.rerun()
+        
+        with col5:
+            if st.button("📰 Feed", key="nav_Feed", type="primary" if current_page == "Feed" else "secondary", use_container_width=True):
+                st.session_state["page"] = "Feed"
+                st.rerun()
+        
+        with col6:
+            if st.button("👤 Profile", key="nav_Profile", type="primary" if current_page == "Profile" else "secondary", use_container_width=True):
                 st.session_state["page"] = "Profile"
-                profile_clicked = True
-
-        st.markdown("## TrustBites")
-
-        if auth["signed_in"]:
-            nav_options = ["Home", "Add a place", "My list", "Map", "Feed"]
-
-            # what page are we currently on?
-            current_page = st.session_state.get("page", "Home")
-            # for the radio, if page is not in nav (i.e. Profile), default to Home
-            default_for_radio = current_page if current_page in nav_options else "Home"
-
-            page_from_radio = st.radio(
-                label="",
-                options=nav_options,
-                index=nav_options.index(default_for_radio),
-                label_visibility="collapsed",
-                key="nav_radio",
-            )
-
-            # if the user did NOT just click the Profile button,
-            # let the radio control navigation
-            if not profile_clicked:
-                st.session_state["page"] = page_from_radio
-
-            # route based on the central "page" state
-            return st.session_state["page"]
-
-        else:
-            st.markdown("### Navigate")
-            st.write("Home")
-            return "Home"
+                st.rerun()
+        
+        with col_signout:
+            if st.button("Sign out", key="signout_nav", type="secondary", use_container_width=True):
+                st.session_state["auth"] = {
+                    "signed_in": False,
+                    "email": "",
+                    "first_name": "",
+                    "last_name": "",
+                }
+                st.session_state["profile"] = {"name": "", "bio": "", "photo_b64": None}
+                st.rerun()
+        
+        st.markdown("<div style='margin-bottom:1rem'></div>", unsafe_allow_html=True)
+        
+        return st.session_state["page"]
+    else:
+        return "Home"
                 
 # ---------- AUTH / PROFILE ----------
 def page_auth_home():
@@ -1014,24 +1221,7 @@ _ensure_state()
 
 auth = st.session_state["auth"]
 
-# Sign out button ONLY when signed in
-_ensure_state()
-
-auth = st.session_state["auth"]
-
-# Sign out button ONLY when signed in
-if auth["signed_in"]:
-    if st.button("Sign out", key="signout_top"):
-        st.session_state["auth"] = {
-            "signed_in": False,
-            "email": "",
-            "first_name": "",
-            "last_name": "",
-        }
-        st.session_state["profile"] = {"name": "", "bio": "", "photo_b64": None}
-        st.rerun()
-
-current = _navbar()   # this also keeps st.session_state["page"] in sync
+current = _navbar()   # renders top nav and handles navigation state
 
 if st.session_state.get("force_page") is not None:
     current = st.session_state["force_page"]
