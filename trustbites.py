@@ -67,13 +67,28 @@ def inject_styles():
       .tb-header {
         background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
         border-bottom: 1px solid var(--border);
-        padding: 0.75rem 1.5rem;
+        padding: 0.6rem 1.5rem;
         margin: -1rem -2rem 0 -2rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
         box-shadow: 0 2px 12px rgba(15,23,42,.04);
         gap: 1.5rem;
+        min-height: 50px;
+      }
+      
+      /* Pull columns up to align with header */
+      [data-testid="stHorizontalBlock"]:first-of-type {
+        margin-top: -3.75rem !important;
+        padding: 0.6rem 0 !important;
+        background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+        margin-left: -2rem !important;
+        margin-right: -2rem !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+        border-bottom: 1px solid var(--border);
+        display: flex !important;
+        align-items: center !important;
       }
 
       .tb-logo {
