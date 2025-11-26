@@ -441,21 +441,20 @@ def page_auth_home():
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-def _handle_photo_upload():
-    """Callback to process uploaded photo immediately."""
-    uploaded_file = st.session_state.get("profile_photo_uploader")
-    if uploaded_file is not None:
-        try:
-            uploaded_file.seek(0)
-            file_bytes = uploaded_file.read()
-            img = Image.open(BytesIO(file_bytes)).convert("RGB")
-            img.thumbnail((1024, 1024))
-            buf = BytesIO()
-            img.save(buf, format="JPEG", quality=85)
-            photo_b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
-            st.session_state["profile"]["photo_b64"] = photo_b64
-        except Exception as e:
-            st.session_state["photo_upload_error"] = str(e)
+def process_uploaded_photo(uploaded_file):
+    """Process an uploaded photo file and return base64 string."""
+    if uploaded_file is None:
+        return None
+    try:
+        file_bytes = uploaded_file.getvalue()
+        img = Image.open(BytesIO(file_bytes)).convert("RGB")
+        img.thumbnail((1024, 1024))
+        buf = BytesIO()
+        img.save(buf, format="JPEG", quality=85)
+        return base64.b64encode(buf.getvalue()).decode("utf-8")
+    except Exception as e:
+        st.error(f"Failed to process photo: {e}")
+        return None
 
 
 def page_profile():
@@ -476,16 +475,17 @@ def page_profile():
     if current_photo:
         st.image(f"data:image/jpeg;base64,{current_photo}", width=100, caption="Current avatar")
     
-    st.file_uploader(
+    uploaded_photo = st.file_uploader(
         "Avatar photo (optional)", 
         type=["png", "jpg", "jpeg"], 
-        key="profile_photo_uploader",
-        on_change=_handle_photo_upload
+        key="profile_photo_uploader"
     )
     
-    if st.session_state.get("photo_upload_error"):
-        st.error(f"Failed to upload photo: {st.session_state['photo_upload_error']}")
-        st.session_state["photo_upload_error"] = None
+    if uploaded_photo is not None:
+        photo_b64 = process_uploaded_photo(uploaded_photo)
+        if photo_b64 and photo_b64 != st.session_state["profile"].get("photo_b64"):
+            st.session_state["profile"]["photo_b64"] = photo_b64
+            st.rerun()
     
     with st.form("profile_form"):
         c1, c2 = st.columns(2)
