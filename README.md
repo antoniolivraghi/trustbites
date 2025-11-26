@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TrustBites 🍴
 
 TrustBites is a prototype web app for **sharing trusted restaurant recommendations between friends**.  
@@ -49,12 +48,12 @@ python3 -m pip install -r requirements.txt
 
 After installing the dependencies, run:
 ```bash
-streamlit run app.py
+streamlit run trustbites.py
 ```
 
 If streamlit is not on your PATH:
 ```bash
-python3 -m streamlit run app.py
+python3 -m streamlit run trustbites.py
 ```
 
 The application will automatically open in your browser at:
@@ -62,22 +61,22 @@ http://localhost:8501
 
 📁 Project Structure
 trustbites/
-├── app.py              # Main Streamlit application
+├── trustbites.py       # Main Streamlit application
 ├── requirements.txt    # Python dependencies
 └── README.md           # Project documentation
 
 ## 🌍 APIs & Data Sources
-	•	Geocoding: Nominatim API (OpenStreetMap)
-	•	Map tiles: OpenStreetMap
-	•	Icons & UI: Custom CSS within Streamlit component
+
+- Geocoding: Nominatim API (OpenStreetMap)
+- Map tiles: OpenStreetMap
+- Icons & UI: Custom CSS within Streamlit component
 
 ## 🙏 Acknowledgements
-	•	Streamlit community for the web application framework
-	•	OpenStreetMap & Nominatim for free geospatial services
-	•	Folium contributors for the mapping library
+
+- Streamlit community for the web application framework
+- OpenStreetMap & Nominatim for free geospatial services
+- Folium contributors for the mapping library
 
 ## 📄 License
+
 This project is for educational purposes.
-=======
-# trustbites
->>>>>>> 0c995636bd0dc90d1fe73c2e92938e181c5663a5
