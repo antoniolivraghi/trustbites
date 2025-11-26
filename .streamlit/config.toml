@@ -6,5 +6,11 @@ secondaryBackgroundColor = "#FFFFFF"
 textColor = "#1A2233"
 font = "sans serif"
 
+[logger]
+level = "warning"
+
+[client]
+showErrorDetails = false
+
 [browser]
 gatherUsageStats = false
