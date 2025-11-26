@@ -15,5 +15,3 @@ enableXsrfProtection = false
 
 [browser]
 gatherUsageStats = false
-serverAddress = "0.0.0.0"
-serverPort = 5000
