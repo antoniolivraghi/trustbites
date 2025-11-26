@@ -435,6 +435,21 @@ def page_auth_home():
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+def _handle_photo_upload():
+    """Callback to process uploaded photo immediately."""
+    uploaded_file = st.session_state.get("profile_photo_uploader")
+    if uploaded_file is not None:
+        try:
+            img = Image.open(uploaded_file).convert("RGB")
+            img.thumbnail((1024, 1024))
+            buf = BytesIO()
+            img.save(buf, format="JPEG", quality=85)
+            photo_b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+            st.session_state["profile"]["photo_b64"] = photo_b64
+        except Exception as e:
+            st.session_state["photo_upload_error"] = str(e)
+
+
 def page_profile():
     auth = st.session_state["auth"]
     users = st.session_state["users"]
@@ -449,16 +464,20 @@ def page_profile():
 
     st.markdown('<div class="tb-card">', unsafe_allow_html=True)
     
-    up = st.file_uploader("Avatar photo (optional)", type=["png", "jpg", "jpeg"], key="profile_photo_uploader")
-    if up is not None:
-        new_photo_b64 = image_file_to_b64(up)
-        if new_photo_b64:
-            st.session_state["profile"]["photo_b64"] = new_photo_b64
-            st.success("Photo uploaded! Click 'Save profile' to save all changes.")
-    
     current_photo = st.session_state["profile"].get("photo_b64")
     if current_photo:
         st.image(f"data:image/jpeg;base64,{current_photo}", width=100, caption="Current avatar")
+    
+    st.file_uploader(
+        "Avatar photo (optional)", 
+        type=["png", "jpg", "jpeg"], 
+        key="profile_photo_uploader",
+        on_change=_handle_photo_upload
+    )
+    
+    if st.session_state.get("photo_upload_error"):
+        st.error(f"Failed to upload photo: {st.session_state['photo_upload_error']}")
+        st.session_state["photo_upload_error"] = None
     
     with st.form("profile_form"):
         c1, c2 = st.columns(2)

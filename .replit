@@ -41,10 +41,6 @@ externalPort = 3000
 localPort = 37517
 externalPort = 3002
 
-[[ports]]
-localPort = 46275
-externalPort = 3001
-
 [deployment]
 deploymentTarget = "autoscale"
 run = ["streamlit", "run", "trustbites.py", "--server.port=5000", "--server.address=0.0.0.0", "--server.headless=true"]
