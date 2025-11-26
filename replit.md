@@ -71,27 +71,7 @@ Potential future enhancements:
 - Persistent user accounts
 - Integration with external APIs (Google Places, Yelp)
 
-## UI Design
-
-The app uses a modern, professional design with:
-- **Horizontal top navigation**: Logo + TrustBites branding in header, with functional navigation buttons below
-- **Inter font**: Clean, modern typography loaded from Google Fonts
-- **Color scheme**: Blue primary (#2563EB), orange accent (#F97316), light background gradients
-- **Cards**: White cards with subtle shadows and rounded corners
-- **Responsive**: CSS adjusts for mobile devices
-
-Navigation buttons include icons for better UX:
-- Home, Add place, My list, Map, Feed, Profile, Sign out
-
 ## Recent Changes
-
-- 2024-11-26: Major UI redesign
-  - Replaced sidebar navigation with horizontal top navigation bar
-  - Added professional header with logo and user info
-  - Improved theme with Inter font and better color scheme
-  - Added gradient backgrounds and improved shadows
-  - Made navigation buttons functional with visual active states
-  - Improved responsive CSS for mobile devices
 
 - 2024-11-26: Initial Replit setup
   - Installed Python 3.11 and all dependencies

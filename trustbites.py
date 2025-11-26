@@ -67,28 +67,12 @@ def inject_styles():
       .tb-header {
         background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
         border-bottom: 1px solid var(--border);
-        padding: 0.6rem 1.5rem;
-        margin: -1rem -2rem 0 -2rem;
+        padding: 0.75rem 1.5rem;
+        margin: -1rem -2rem 1rem -2rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
         box-shadow: 0 2px 12px rgba(15,23,42,.04);
-        gap: 1.5rem;
-        min-height: 50px;
-      }
-      
-      /* Pull columns up to align with header */
-      [data-testid="stHorizontalBlock"]:first-of-type {
-        margin-top: -3.75rem !important;
-        padding: 0.6rem 0 !important;
-        background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
-        margin-left: -2rem !important;
-        margin-right: -2rem !important;
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
-        border-bottom: 1px solid var(--border);
-        display: flex !important;
-        align-items: center !important;
       }
 
       .tb-logo {
@@ -113,43 +97,6 @@ def inject_styles():
         border: 2px solid #E2E8F0;
       }
 
-      .tb-header-center {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-      }
-
-      .tb-header-nav {
-        display: inline-flex;
-        gap: 0.25rem;
-        align-items: center;
-      }
-
-      .tb-header-btn {
-        padding: 0.4rem 0.85rem;
-        border-radius: 8px;
-        border: 1px solid #E2E8F0;
-        background: white;
-        color: var(--text-light);
-        font-size: 0.85rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-decoration: none;
-      }
-
-      .tb-header-btn:hover {
-        background: #F8FAFC;
-        border-color: var(--brand);
-        color: var(--brand);
-      }
-
-      .tb-header-btn.active {
-        background: var(--brand);
-        color: white;
-        border-color: var(--brand);
-      }
-
       .tb-user-menu {
         display: flex;
         align-items: center;
@@ -162,29 +109,9 @@ def inject_styles():
         color: var(--text);
       }
 
-      /* Unified header with nav buttons */
-      .stColumns {
-        gap: 0.25rem !important;
-      }
-      
-      [data-testid="column"] {
-        padding: 0 !important;
-      }
-
-      .stColumns > div:first-child {
-        padding-top: 0.85rem !important;
-        padding-bottom: 0.85rem !important;
-      }
-
-      div.stButton {
-        margin: 0 !important;
-        padding: 0.1rem 0 !important;
-      }
-
-      div.stButton > button {
-        height: 36px !important;
-        font-size: 0.8rem !important;
-        padding: 0.35rem 0.5rem !important;
+      /* Navigation buttons row styling */
+      div[data-testid="stHorizontalBlock"] {
+        gap: 0.5rem !important;
       }
 
       div.stButton > button[kind="secondary"] {
@@ -532,53 +459,104 @@ CITY_CENTERS = {
 
 
 # ---------- NAV + TOP BAR ----------
-def _navbar():
-    """Render header with integrated navigation."""
+def _render_header():
+    """Render the logo and user info header."""
     auth = st.session_state["auth"]
+    avatar_url = _avatar()
     
     logo_html = ""
     if LOGO_B64:
         logo_html = f'<img src="data:image/png;base64,{LOGO_B64}" alt="TrustBites" />'
     
     if auth["signed_in"]:
-        current_page = st.session_state.get("page", "Home")
-        avatar_url = _avatar()
         user_name = f"{auth.get('first_name', '')} {auth.get('last_name', '')}".strip() or auth['email'].split('@')[0]
         
-        # Create header background
-        st.markdown(f'<div class="tb-header"></div>', unsafe_allow_html=True)
+        st.markdown(
+            f'''
+            <div class="tb-header">
+                <div class="tb-logo">
+                    {logo_html}
+                    <span>TrustBites</span>
+                </div>
+                <div class="tb-user-menu">
+                    <span class="tb-user-name">{user_name}</span>
+                    <img src="{avatar_url}" class="tb-avatar-small" alt="Profile" />
+                </div>
+            </div>
+            ''',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            f'''
+            <div class="tb-header">
+                <div class="tb-logo">
+                    {logo_html}
+                    <span>TrustBites</span>
+                </div>
+                <div style="color:#64748B;font-size:0.9rem;">Welcome to TrustBites</div>
+            </div>
+            ''',
+            unsafe_allow_html=True,
+        )
+
+
+def _navbar():
+    """Handle navigation state and render interactive navigation."""
+    auth = st.session_state["auth"]
+    
+    _render_header()
+    
+    if auth["signed_in"]:
+        current_page = st.session_state.get("page", "Home")
         
-        # Create columns for content inside header
-        col_logo, col_h1, col_h2, col_h3, col_h4, col_h5, col_h6, col_user = st.columns([1, 1, 0.9, 0.7, 0.7, 0.9, 2.5, 1.2])
+        col1, col2, col3, col4, col5, col6, col_spacer, col_signout = st.columns([1.2, 1.4, 1, 0.8, 0.8, 1.2, 2, 1])
         
-        # Logo
-        with col_logo:
-            st.markdown(f'<div class="tb-logo">{logo_html}<span>TrustBites</span></div>', unsafe_allow_html=True)
+        with col1:
+            if st.button("🏠 Home", key="nav_Home", type="primary" if current_page == "Home" else "secondary", use_container_width=True):
+                st.session_state["page"] = "Home"
+                st.rerun()
         
-        # Navigation buttons
-        nav_items = [
-            ("🏠 Home", "nav_Home", "Home"),
-            ("➕ Add place", "nav_Add", "Add a place"),
-            ("📋 My list", "nav_List", "My list"),
-            ("🗺️ Map", "nav_Map", "Map"),
-            ("📰 Feed", "nav_Feed", "Feed"),
-            ("👤 Profile", "nav_Profile", "Profile"),
-        ]
+        with col2:
+            if st.button("➕ Add place", key="nav_Add", type="primary" if current_page == "Add a place" else "secondary", use_container_width=True):
+                st.session_state["page"] = "Add a place"
+                st.rerun()
         
-        cols_nav = [col_h1, col_h2, col_h3, col_h4, col_h5, col_h6]
-        for i, (label, key, page) in enumerate(nav_items):
-            with cols_nav[i]:
-                if st.button(label, key=key, type="primary" if current_page == page else "secondary", use_container_width=True):
-                    st.session_state["page"] = page
-                    st.rerun()
+        with col3:
+            if st.button("📋 My list", key="nav_List", type="primary" if current_page == "My list" else "secondary", use_container_width=True):
+                st.session_state["page"] = "My list"
+                st.rerun()
         
-        # User menu
-        with col_user:
-            st.markdown(f'<div class="tb-user-menu"><span class="tb-user-name">{user_name}</span><img src="{avatar_url}" class="tb-avatar-small" alt="Profile" /></div>', unsafe_allow_html=True)
+        with col4:
+            if st.button("🗺️ Map", key="nav_Map", type="primary" if current_page == "Map" else "secondary", use_container_width=True):
+                st.session_state["page"] = "Map"
+                st.rerun()
+        
+        with col5:
+            if st.button("📰 Feed", key="nav_Feed", type="primary" if current_page == "Feed" else "secondary", use_container_width=True):
+                st.session_state["page"] = "Feed"
+                st.rerun()
+        
+        with col6:
+            if st.button("👤 Profile", key="nav_Profile", type="primary" if current_page == "Profile" else "secondary", use_container_width=True):
+                st.session_state["page"] = "Profile"
+                st.rerun()
+        
+        with col_signout:
+            if st.button("Sign out", key="signout_nav", type="secondary", use_container_width=True):
+                st.session_state["auth"] = {
+                    "signed_in": False,
+                    "email": "",
+                    "first_name": "",
+                    "last_name": "",
+                }
+                st.session_state["profile"] = {"name": "", "bio": "", "photo_b64": None}
+                st.rerun()
+        
+        st.markdown("<div style='margin-bottom:1rem'></div>", unsafe_allow_html=True)
         
         return st.session_state["page"]
     else:
-        st.markdown(f'<div class="tb-header"><div class="tb-logo">{logo_html}<span>TrustBites</span></div><div style="color:#64748B;font-size:0.9rem;">Welcome to TrustBites</div></div>', unsafe_allow_html=True)
         return "Home"
                 
 # ---------- AUTH / PROFILE ----------
