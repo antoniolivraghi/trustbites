@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TrustBites 🍴
 
 TrustBites is a prototype web app for **sharing trusted restaurant recommendations between friends**.  
@@ -77,3 +78,6 @@ trustbites/
 
 ## 📄 License
 This project is for educational purposes.
+=======
+# trustbites
+>>>>>>> 0c995636bd0dc90d1fe73c2e92938e181c5663a5
