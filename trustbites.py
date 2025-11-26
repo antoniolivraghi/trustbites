@@ -68,11 +68,12 @@ def inject_styles():
         background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
         border-bottom: 1px solid var(--border);
         padding: 0.75rem 1.5rem;
-        margin: -1rem -2rem 1rem -2rem;
+        margin: -1rem -2rem 0 -2rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
         box-shadow: 0 2px 12px rgba(15,23,42,.04);
+        gap: 1.5rem;
       }
 
       .tb-logo {
@@ -146,9 +147,29 @@ def inject_styles():
         color: var(--text);
       }
 
-      /* Navigation buttons row styling */
-      div[data-testid="stHorizontalBlock"] {
-        gap: 0.5rem !important;
+      /* Unified header with nav buttons */
+      .stColumns {
+        gap: 0.25rem !important;
+      }
+      
+      [data-testid="column"] {
+        padding: 0 !important;
+      }
+
+      .stColumns > div:first-child {
+        padding-top: 0.85rem !important;
+        padding-bottom: 0.85rem !important;
+      }
+
+      div.stButton {
+        margin: 0 !important;
+        padding: 0.1rem 0 !important;
+      }
+
+      div.stButton > button {
+        height: 36px !important;
+        font-size: 0.8rem !important;
+        padding: 0.35rem 0.5rem !important;
       }
 
       div.stButton > button[kind="secondary"] {
@@ -496,8 +517,8 @@ CITY_CENTERS = {
 
 
 # ---------- NAV + TOP BAR ----------
-def _render_header():
-    """Render the logo, nav links and user info in header."""
+def _navbar():
+    """Render header with integrated navigation."""
     auth = st.session_state["auth"]
     
     logo_html = ""
@@ -505,51 +526,21 @@ def _render_header():
         logo_html = f'<img src="data:image/png;base64,{LOGO_B64}" alt="TrustBites" />'
     
     if auth["signed_in"]:
+        current_page = st.session_state.get("page", "Home")
         avatar_url = _avatar()
         user_name = f"{auth.get('first_name', '')} {auth.get('last_name', '')}".strip() or auth['email'].split('@')[0]
         
-        st.markdown(
-            f'''
-            <div class="tb-header">
-                <div class="tb-logo">
-                    {logo_html}
-                    <span>TrustBites</span>
-                </div>
-                <div id="nav-placeholder"></div>
-                <div class="tb-user-menu">
-                    <span class="tb-user-name">{user_name}</span>
-                    <img src="{avatar_url}" class="tb-avatar-small" alt="Profile" />
-                </div>
-            </div>
-            ''',
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            f'''
-            <div class="tb-header">
-                <div class="tb-logo">
-                    {logo_html}
-                    <span>TrustBites</span>
-                </div>
-                <div style="color:#64748B;font-size:0.9rem;">Welcome to TrustBites</div>
-            </div>
-            ''',
-            unsafe_allow_html=True,
-        )
-
-
-def _navbar():
-    """Handle navigation state and render interactive navigation in header."""
-    auth = st.session_state["auth"]
-    
-    _render_header()
-    
-    if auth["signed_in"]:
-        current_page = st.session_state.get("page", "Home")
+        # Create header background
+        st.markdown(f'<div class="tb-header"></div>', unsafe_allow_html=True)
         
-        cols = st.columns([0.8, 1, 0.7, 0.6, 0.6, 0.8, 3, 0.7])
+        # Create columns for content inside header
+        col_logo, col_h1, col_h2, col_h3, col_h4, col_h5, col_h6, col_user = st.columns([1, 1, 0.9, 0.7, 0.7, 0.9, 2.5, 1.2])
         
+        # Logo
+        with col_logo:
+            st.markdown(f'<div class="tb-logo">{logo_html}<span>TrustBites</span></div>', unsafe_allow_html=True)
+        
+        # Navigation buttons
         nav_items = [
             ("🏠 Home", "nav_Home", "Home"),
             ("➕ Add place", "nav_Add", "Add a place"),
@@ -559,25 +550,20 @@ def _navbar():
             ("👤 Profile", "nav_Profile", "Profile"),
         ]
         
+        cols_nav = [col_h1, col_h2, col_h3, col_h4, col_h5, col_h6]
         for i, (label, key, page) in enumerate(nav_items):
-            with cols[i]:
+            with cols_nav[i]:
                 if st.button(label, key=key, type="primary" if current_page == page else "secondary", use_container_width=True):
                     st.session_state["page"] = page
                     st.rerun()
         
-        with cols[7]:
-            if st.button("Sign out", key="signout_nav", type="secondary", use_container_width=True):
-                st.session_state["auth"] = {
-                    "signed_in": False,
-                    "email": "",
-                    "first_name": "",
-                    "last_name": "",
-                }
-                st.session_state["profile"] = {"name": "", "bio": "", "photo_b64": None}
-                st.rerun()
+        # User menu
+        with col_user:
+            st.markdown(f'<div class="tb-user-menu"><span class="tb-user-name">{user_name}</span><img src="{avatar_url}" class="tb-avatar-small" alt="Profile" /></div>', unsafe_allow_html=True)
         
         return st.session_state["page"]
     else:
+        st.markdown(f'<div class="tb-header"><div class="tb-logo">{logo_html}<span>TrustBites</span></div><div style="color:#64748B;font-size:0.9rem;">Welcome to TrustBites</div></div>', unsafe_allow_html=True)
         return "Home"
                 
 # ---------- AUTH / PROFILE ----------
