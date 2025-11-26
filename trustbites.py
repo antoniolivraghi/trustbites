@@ -566,7 +566,7 @@ def page_auth_home():
     users = st.session_state["users"]
 
     st.markdown('<div class="tb-card">', unsafe_allow_html=True)
-    tab_signup, tab_signin = st.tabs(["✨ Create account", "🔐 Sign in"])
+    tab_signup, tab_signin = st.tabs(["Create account", "Sign in"])
 
     # SIGN UP
     with tab_signup:
