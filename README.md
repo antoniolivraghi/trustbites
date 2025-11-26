@@ -34,6 +34,13 @@ It is built with **Streamlit** and uses **OpenStreetMap (Nominatim) + Folium** f
 
 ---
 
+## 🌐 Live Demo (Streamlit Cloud)
+
+You can try TrustBites online here:
+https://trustbites.streamlit.app/ 
+
+No installation required — the app runs directly in your browser.
+
 ## 📦 Installation
 
 From the project directory, install all dependencies:
@@ -48,35 +55,36 @@ python3 -m pip install -r requirements.txt
 
 After installing the dependencies, run:
 ```bash
-streamlit run trustbites.py
+streamlit run app.py
 ```
 
 If streamlit is not on your PATH:
 ```bash
-python3 -m streamlit run trustbites.py
+python3 -m streamlit run app.py
 ```
 
 The application will automatically open in your browser at:
 http://localhost:8501
 
-📁 Project Structure
+## 📁 Project Structure
 trustbites/
-├── trustbites.py       # Main Streamlit application
-├── requirements.txt    # Python dependencies
-└── README.md           # Project documentation
+├── trustbites.py           # Main Streamlit application
+├── trustbites_logo.png     # App logo
+├── requirements.txt        # Python dependencies
+├── .streamlit/
+│   └── config.toml        # Streamlit configuration (port 5000, host settings)
+├── .gitignore             # Git ignore rules
+└── README.md              # Project documentation
 
 ## 🌍 APIs & Data Sources
-
-- Geocoding: Nominatim API (OpenStreetMap)
-- Map tiles: OpenStreetMap
-- Icons & UI: Custom CSS within Streamlit component
+	•	Geocoding: Nominatim API (OpenStreetMap)
+	•	Map tiles: OpenStreetMap
+	•	Icons & UI: Custom CSS within Streamlit component
 
 ## 🙏 Acknowledgements
-
-- Streamlit community for the web application framework
-- OpenStreetMap & Nominatim for free geospatial services
-- Folium contributors for the mapping library
+	•	Streamlit community for the web application framework
+	•	OpenStreetMap & Nominatim for free geospatial services
+	•	Folium contributors for the mapping library
 
 ## 📄 License
-
 This project is for educational purposes.
