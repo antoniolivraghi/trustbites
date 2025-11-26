@@ -446,7 +446,9 @@ def _handle_photo_upload():
     uploaded_file = st.session_state.get("profile_photo_uploader")
     if uploaded_file is not None:
         try:
-            img = Image.open(uploaded_file).convert("RGB")
+            uploaded_file.seek(0)
+            file_bytes = uploaded_file.read()
+            img = Image.open(BytesIO(file_bytes)).convert("RGB")
             img.thumbnail((1024, 1024))
             buf = BytesIO()
             img.save(buf, format="JPEG", quality=85)
