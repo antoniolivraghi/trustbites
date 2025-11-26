@@ -482,10 +482,14 @@ def page_profile():
     )
     
     if uploaded_photo is not None:
-        photo_b64 = process_uploaded_photo(uploaded_photo)
-        if photo_b64 and photo_b64 != st.session_state["profile"].get("photo_b64"):
-            st.session_state["profile"]["photo_b64"] = photo_b64
-            st.rerun()
+        file_id = f"{uploaded_photo.name}_{uploaded_photo.size}"
+        last_processed = st.session_state.get("_last_processed_photo")
+        if file_id != last_processed:
+            photo_b64 = process_uploaded_photo(uploaded_photo)
+            if photo_b64:
+                st.session_state["profile"]["photo_b64"] = photo_b64
+                st.session_state["_last_processed_photo"] = file_id
+                st.rerun()
     
     with st.form("profile_form"):
         c1, c2 = st.columns(2)
